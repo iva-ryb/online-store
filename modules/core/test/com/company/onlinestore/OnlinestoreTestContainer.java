@@ -11,10 +11,15 @@ public class OnlinestoreTestContainer extends TestContainer {
     public OnlinestoreTestContainer() {
         super();
         //noinspection ArraysAsListWithZeroOrOneArgument
-        appComponents = new ArrayList<>(Arrays.asList(
-                // list add-ons here: "com.haulmont.reports", "com.haulmont.addon.bproc", etc.
-                "com.haulmont.cuba"
-        ));
+        appComponents = Arrays.asList(
+                "com.haulmont.cuba",
+                "com.haulmont.addon.maps",
+                "com.haulmont.addon.dashboard",
+                "com.haulmont.addon.helium",
+                "com.haulmont.addon.bproc",
+                "com.haulmont.reports",
+                "com.haulmont.addon.restapi",
+                "com.haulmont.charts");
         appPropertiesFiles = Arrays.asList(
                 // List the files defined in your web.xml
                 // in appPropertiesConfig context parameter of the core module
