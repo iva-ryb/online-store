@@ -45,13 +45,14 @@ cuba {
 
 dependencies {
     appComponent("com.haulmont.cuba:cuba-global:$cubaVersion")
-    appComponent('com.haulmont.addon.maps:maps-global:1.3.1')
     appComponent('com.haulmont.addon.dashboard:dashboard-global:3.2.3')
     appComponent('com.haulmont.addon.helium:helium-global:0.4.0')
     appComponent('com.haulmont.addon.bproc:bproc-global:1.2.1')
     appComponent("com.haulmont.reports:reports-global:$cubaVersion")
     appComponent('com.haulmont.addon.restapi:restapi-global:7.2.5')
     appComponent("com.haulmont.charts:charts-global:$cubaVersion")
+    appComponent('com.haulmont.addon.maps:maps-global:1.3.1')
+    appComponent('com.company.application:app-global:0.1-SNAPSHOT')
 }
 
 def postgres = 'org.postgresql:postgresql:42.2.9'
@@ -88,6 +89,7 @@ configure(globalModule) {
             runtime('org.glassfish.jaxb:jaxb-runtime:2.3.1')
         }
         compile 'com.company.application:app-global:0.1-SNAPSHOT'
+        compile 'com.byteowls:jopencage:1.4.0'
     }
 
     entitiesEnhancing {
