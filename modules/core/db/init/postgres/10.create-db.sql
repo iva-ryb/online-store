@@ -23,6 +23,7 @@ create table ONLINESTORE_ONLINE_ORDER (
     DELETE_TS timestamp,
     DELETED_BY varchar(50),
     --
+    NUMBER varchar(255),
     BUYER_ID uuid,
     DISCOUNT integer,
     STATUS varchar(255),

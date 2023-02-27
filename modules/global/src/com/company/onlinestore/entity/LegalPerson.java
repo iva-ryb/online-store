@@ -14,6 +14,9 @@ public class LegalPerson extends Buyer {
     @Column(name = "FULL_NAME_LEGAL")
     private String fullNameLegal;
 
+    @Column(name = "NAME")
+    private String name;
+
     @Embedded
     @EmbeddedParameters(nullAllowed = false)
     private Address address;
@@ -27,6 +30,14 @@ public class LegalPerson extends Buyer {
 
     public LegalPerson() {
     }
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 
     public Address getAddress() {
         return address;
