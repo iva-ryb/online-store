@@ -10,13 +10,14 @@ public class OnlinestoreWebTestContainer extends TestContainer {
     public OnlinestoreWebTestContainer() {
         appComponents = Arrays.asList(
                 "com.haulmont.cuba",
-                "com.haulmont.addon.maps",
                 "com.haulmont.addon.dashboard",
                 "com.haulmont.addon.helium",
                 "com.haulmont.addon.bproc",
                 "com.haulmont.reports",
                 "com.haulmont.addon.restapi",
-                "com.haulmont.charts");
+                "com.haulmont.charts",
+                "com.haulmont.addon.maps",
+                "com.company.application");
         appPropertiesFiles = Arrays.asList(
                 // List the files defined in your web.xml
                 // in appPropertiesConfig context parameter of the web module

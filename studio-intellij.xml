@@ -17,6 +17,7 @@
         <option value="deploy\app_home\store\conf" />
       </list>
     </option>
+    <option name="groupUpdateScriptsBy" value="MONTH" />
     <option name="stateVersion" value="1" />
   </component>
 </project>
