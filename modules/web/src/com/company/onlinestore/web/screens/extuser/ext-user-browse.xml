@@ -40,6 +40,7 @@
                 <column id="middleName"/>
                 <column id="position"/>
                 <column id="email"/>
+                <column id="buyer.buyerType"/>
                 <column id="language"/>
                 <column id="timeZone"/>
                 <column id="timeZoneAuto"/>

@@ -30,6 +30,9 @@ public class LegalPersonEdit extends StandardEditor<LegalPerson> {
                             }),
                             new DialogAction(DialogAction.Type.NO))
                     .show();
+        } else {
+            closeWithCommit();
         }
+
     }
 }

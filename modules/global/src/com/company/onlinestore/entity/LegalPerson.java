@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 @Entity(name = "onlinestore_LegalPerson")
 @Table(name = "ONLINESTORE_LEGAL_PERSON")
-@NamePattern("%s|fullNameLegal")
+@NamePattern("%s|buyerType")
 public class LegalPerson extends Buyer {
     private static final long serialVersionUID = -4901702845873708688L;
 

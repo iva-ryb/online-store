@@ -1,7 +1,7 @@
 package com.company.onlinestore.web.screens.extuser;
 
-import com.haulmont.cuba.gui.screen.*;
 import com.company.onlinestore.entity.ExtUser;
+import com.haulmont.cuba.gui.screen.*;
 
 @UiController("sec$ExtUser.browse")
 @UiDescriptor("ext-user-browse.xml")

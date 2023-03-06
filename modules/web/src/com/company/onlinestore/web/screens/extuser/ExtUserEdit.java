@@ -1,16 +1,18 @@
 package com.company.onlinestore.web.screens.extuser;
 
-import com.company.onlinestore.entity.*;
-import com.company.onlinestore.web.screens.buyer.BuyerEdit;
+import com.company.onlinestore.entity.BuyerType;
+import com.company.onlinestore.entity.ExtUser;
+import com.company.onlinestore.entity.LegalPerson;
+import com.company.onlinestore.entity.PrivatePerson;
 import com.company.onlinestore.web.screens.legalperson.LegalPersonEdit;
 import com.company.onlinestore.web.screens.privateperson.PrivatePersonEdit;
+import com.haulmont.cuba.core.global.CommitContext;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.gui.Dialogs;
 import com.haulmont.cuba.gui.Screens;
 import com.haulmont.cuba.gui.components.Action;
-import com.haulmont.cuba.gui.components.Actions;
+import com.haulmont.cuba.gui.components.Button;
 import com.haulmont.cuba.gui.components.DialogAction;
-import com.haulmont.cuba.gui.components.HBoxLayout;
 import com.haulmont.cuba.gui.components.actions.BaseAction;
 import com.haulmont.cuba.gui.screen.*;
 
@@ -29,18 +31,20 @@ public class ExtUserEdit extends StandardEditor<ExtUser> {
     @Inject
     private Dialogs dialogs;
 
-    @Subscribe
-    public void onBeforeCommitChanges(BeforeCommitChangesEvent event) {
+    @Subscribe("onShowDialogBtnClick")
+    public void onOnShowDialogBtnClickClick(Button.ClickEvent event) {
         if (getEditedEntity().getBuyer() == null) {
             dialogs.createOptionDialog()
-                    .withCaption("warning")
-                    .withMessage("Create buyer?")
+                    .withCaption("Warning")
+                    .withMessage("You not joined with Buyer, create?")
                     .withActions(
                             new DialogAction(DialogAction.Type.YES, Action.Status.PRIMARY).withHandler(e -> {
                                 createBuyer(getEditedEntity());
                             }),
-                            new DialogAction(DialogAction.Type.NO)
-                    ).show();
+                            new DialogAction(DialogAction.Type.NO))
+                    .show();
+        } else {
+            closeWithDiscard();
         }
     }
 
@@ -61,6 +65,7 @@ public class ExtUserEdit extends StandardEditor<ExtUser> {
                             privatePerson.setUser(user);
                             privatePerson.setBuyerType(BuyerType.PRIVATE);
 
+                            user.setBuyer(privatePerson);
                             screen.setEntityToEdit(privatePerson);
                             screens.show(screen);
                         }),
@@ -73,6 +78,7 @@ public class ExtUserEdit extends StandardEditor<ExtUser> {
                             legalPerson.setEmail(user.getEmail());
                             legalPerson.setBuyerType(BuyerType.LEGAL);
                             legalPerson.setUser(user);
+                            user.setBuyer(legalPerson);
 
                             screen.setEntityToEdit(legalPerson);
                             screens.show(screen);

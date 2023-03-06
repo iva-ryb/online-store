@@ -41,6 +41,8 @@ public class PrivatePersonEdit extends StandardEditor<PrivatePerson> {
                             }),
                             new DialogAction(DialogAction.Type.NO))
                     .show();
+        } else {
+            closeWithCommit();
         }
     }
 }

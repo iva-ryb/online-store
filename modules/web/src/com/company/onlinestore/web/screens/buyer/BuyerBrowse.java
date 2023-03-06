@@ -1,5 +1,6 @@
 package com.company.onlinestore.web.screens.buyer;
 
+import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.gui.screen.*;
 import com.company.onlinestore.entity.Buyer;
 

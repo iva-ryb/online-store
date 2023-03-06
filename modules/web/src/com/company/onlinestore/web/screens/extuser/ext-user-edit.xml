@@ -42,7 +42,7 @@
             </form>
         </scrollBox>
         <hbox id="editActions" spacing="true">
-            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="onShowDialogBtnClick" primary="true" icon="CHECK" caption="OK"/>
             <button id="closeBtn" action="windowClose"/>
         </hbox>
     </layout>

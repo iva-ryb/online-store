@@ -43,7 +43,7 @@ create table ONLINESTORE_PRIVATE_PERSON (
     STREET varchar(255),
     BUILDING varchar(255),
     --
-    FULL_NAME_Private varchar(255),
+    FULL_NAME_PRIVATE varchar(255),
     FIRST_NAME varchar(255),
     SECOND_NAME varchar(255),
     PATRONYMIC varchar(255),

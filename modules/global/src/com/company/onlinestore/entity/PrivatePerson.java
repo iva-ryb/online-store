@@ -8,11 +8,11 @@ import javax.persistence.*;
 
 @Entity(name = "onlinestore_PrivatePerson")
 @Table(name = "ONLINESTORE_PRIVATE_PERSON")
-@NamePattern("%s|fullNamePrivate")
+@NamePattern("%s|buyerType")
 public class PrivatePerson extends Buyer {
     private static final long serialVersionUID = -5234581133760921413L;
 
-    @Column(name = "FULL_NAME_Private")
+    @Column(name = "FULL_NAME_PRIVATE")
     private String fullNamePrivate;
 
     @Column(name = "FIRST_NAME")

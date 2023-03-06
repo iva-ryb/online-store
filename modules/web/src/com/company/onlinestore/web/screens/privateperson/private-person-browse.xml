@@ -7,7 +7,7 @@
     <data readOnly="true">
         <collection id="privatePersonsDc"
                     class="com.company.onlinestore.entity.PrivatePerson">
-            <view extends="_local">
+            <view extends="privatePerson-view">
                 <property name="address" view="_minimal"/>
                 <property name="user" view="_minimal">
                     <property name="buyer" view="_minimal"/>
