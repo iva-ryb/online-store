@@ -7,6 +7,7 @@ import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.BaseUuidEntity;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @MetaClass(name = "onlinestore_RandomProduct")
 @NamePattern("%s |product")
@@ -44,5 +45,19 @@ public class RandomProduct extends BaseUuidEntity {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        RandomProduct that = (RandomProduct) o;
+        return Objects.equals(product.getName(), that.product.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), product);
     }
 }

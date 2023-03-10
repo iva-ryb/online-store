@@ -5,6 +5,7 @@ import com.company.onlinestore.entity.ExtUser;
 import com.company.onlinestore.entity.OnlineOrder;
 import com.company.onlinestore.entity.ProductList;
 import com.company.onlinestore.entity.RandomProduct;
+import com.company.onlinestore.web.screens.storeproduct.StoreProductBrowse;
 import com.haulmont.cuba.core.app.UniqueNumbersService;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.Metadata;
@@ -18,7 +19,9 @@ import com.haulmont.cuba.security.global.UserSession;
 import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @UiController("onlinestore_OnlineOrder.edit")
 @UiDescriptor("online-order-edit.xml")
@@ -40,6 +43,7 @@ public class OnlineOrderEdit extends StandardEditor<OnlineOrder> {
 
     @Inject
     private Metadata metadata;
+
     @Inject
     private CollectionContainer<RandomProduct> customDatasourceDc;
 
@@ -71,6 +75,7 @@ public class OnlineOrderEdit extends StandardEditor<OnlineOrder> {
     @Subscribe("openProductListScreen")
     public void onOpenProductListScreenClick(Button.ClickEvent event) {
         screenBuilders.lookup(StoreProduct.class, this)
+                .withScreenClass(StoreProductBrowse.class)
                 .withLaunchMode(OpenMode.DIALOG)
                 .build()
                 .show();
@@ -79,6 +84,7 @@ public class OnlineOrderEdit extends StandardEditor<OnlineOrder> {
     @Subscribe
     public void onBeforeShow(BeforeShowEvent event) {
         List<StoreProduct> products = dataManager.load(StoreProduct.class).list();
+        Set<RandomProduct> set = new HashSet<>();
         int randAmount = getRandomIntegerBetweenRange(1, products.size() - 1);
         for (int i = 0; i < randAmount; i++) {
             int randIndex = getRandomIntegerBetweenRange(0, products.size() - 1);
@@ -87,8 +93,10 @@ public class OnlineOrderEdit extends StandardEditor<OnlineOrder> {
             randomProduct.setAmount(storeProduct.getCount());
             randomProduct.setPrice(products.get(randIndex).getPrice());
             randomProduct.setProduct(products.get(randIndex).getProduct());
-            customDatasourceDc.getMutableItems().add(randomProduct);
+            set.add(randomProduct);
         }
+
+        customDatasourceDc.getMutableItems().addAll(set);
     }
 
     @Subscribe("productsTable")
@@ -105,8 +113,8 @@ public class OnlineOrderEdit extends StandardEditor<OnlineOrder> {
             product.setOnlineOrder(onlineOrder);
         }
         onlineOrder.setProducts(productLists);
+        closeWithCommit();
     }
-
 
     private int getRandomIntegerBetweenRange(int min, int max) {
         return (int) (Math.random() * ((max - min) + 1)) + min;
