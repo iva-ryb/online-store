@@ -1,4 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <views xmlns="http://schemas.haulmont.com/cuba/view.xsd">
 
+    <view entity="sec$ExtUser" name="extUser-view" extends="_local">
+        <property name="buyer" view="buyer-view"/>
+        <property name="group" view="group.browse"/>
+    </view>
+    <view entity="onlinestore_Buyer" name="buyer-view" extends="_local">
+        <property name="user" view="_minimal"/>
+    </view>
+    <view entity="onlinestore_LegalPerson" name="legalPerson-view" extends="_local">
+        <property name="user" view="_minimal">
+            <property name="buyer" view="_minimal"/>
+        </property>
+    </view>
+    <view entity="onlinestore_PrivatePerson" name="privatePerson-view" extends="_local">
+        <property name="user" view="_minimal"/>
+        <property name="address" view="_minimal"/>
+    </view>
+    <view entity="onlinestore_ProductList" name="productList-view" extends="_local">
+        <property name="product" view="product-view"/>
+    </view>
 </views>

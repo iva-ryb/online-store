@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        xmlns:c="http://schemas.haulmont.com/cuba/screen/jpql_condition.xsd"
+        caption="msg://privatePersonBrowse.caption"
+        focusComponent="privatePersonsTable"
+        messagesPack="com.company.onlinestore.web.screens.privateperson">
+    <data readOnly="true">
+        <collection id="privatePersonsDc"
+                    class="com.company.onlinestore.entity.PrivatePerson">
+            <view extends="privatePerson-view">
+                <property name="address" view="_minimal"/>
+                <property name="user" view="_minimal">
+                    <property name="buyer" view="_minimal"/>
+                </property>
+            </view>
+            <loader id="privatePersonsDl">
+                <query>
+                    <![CDATA[select e from onlinestore_PrivatePerson e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="privatePersonsTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="privatePersonsTable"
+                dataLoader="privatePersonsDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="privatePersonsTable"
+                    width="100%"
+                    dataContainer="privatePersonsDc">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+            </actions>
+            <columns>
+                <column id="fullNamePrivate"/>
+                <column id="firstName"/>
+                <column id="secondName"/>
+                <column id="patronymic"/>
+                <column id="address.city"/>
+                <column id="address.street"/>
+                <column id="address.building"/>
+                <column id="email"/>
+                <column id="user"/>
+            </columns>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="privatePersonsTable.create"/>
+                <button id="editBtn" action="privatePersonsTable.edit"/>
+                <button id="removeBtn" action="privatePersonsTable.remove"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

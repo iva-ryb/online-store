@@ -7,11 +7,12 @@ import com.haulmont.cuba.core.entity.annotation.EmbeddedParameters;
 import javax.persistence.*;
 
 @Entity(name = "onlinestore_PrivatePerson")
-@NamePattern("%s|fullNamePrivate")
+@Table(name = "ONLINESTORE_PRIVATE_PERSON")
+@NamePattern("%s|buyerType")
 public class PrivatePerson extends Buyer {
     private static final long serialVersionUID = -5234581133760921413L;
 
-    @Column(name = "FULL_NAME_Private")
+    @Column(name = "FULL_NAME_PRIVATE")
     private String fullNamePrivate;
 
     @Column(name = "FIRST_NAME")
@@ -29,10 +30,6 @@ public class PrivatePerson extends Buyer {
 
     @Column(name = "EMAIL")
     private String email;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    private ExtUser user;
 
     public PrivatePerson() {
     }
@@ -83,13 +80,5 @@ public class PrivatePerson extends Buyer {
 
     public void setFullNamePrivate(String fullNamePrivate) {
         this.fullNamePrivate = fullNamePrivate;
-    }
-
-    public ExtUser getUser() {
-        return user;
-    }
-
-    public void setUser(ExtUser user) {
-        this.user = user;
     }
 }

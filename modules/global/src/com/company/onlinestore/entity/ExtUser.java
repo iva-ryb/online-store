@@ -11,11 +11,9 @@ import javax.persistence.*;
 
 @Entity(name = "sec$ExtUser")
 @NamePattern("%s %s|name,login")
-@Extends(User.class)
 public class ExtUser extends User {
     private static final long serialVersionUID = 2051524652017573197L;
 
-    @Composition
     @OnDelete(DeletePolicy.CASCADE)
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BUYER_ID")

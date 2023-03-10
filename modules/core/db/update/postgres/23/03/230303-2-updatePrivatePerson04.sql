@@ -1,0 +1,3 @@
+alter table ONLINESTORE_PRIVATE_PERSON rename column user_id to user_id__u69100 ;
+alter table ONLINESTORE_PRIVATE_PERSON drop constraint FK_ONLINESTORE_PRIVATE_PERSON_ON_USER ;
+drop index IDX_ONLINESTORE_PRIVATE_PERSON_ON_USER ;

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://legalPersonEdit.caption"
+        focusComponent="form"
+        messagesPack="com.company.onlinestore.web.screens.legalperson">
+    <data>
+        <instance id="legalPersonDc"
+                  class="com.company.onlinestore.entity.LegalPerson">
+            <view extends="_local">
+                <property name="address" view="_minimal"/>
+                <property name="user" view="_minimal">
+                    <property name="buyer" view="_minimal"/>
+                </property>
+            </view>
+            <loader/>
+        </instance>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="editActions" spacing="true">
+        <form id="form" dataContainer="legalPersonDc">
+            <column width="350px">
+                <textField id="fullNameLegalField" property="fullNameLegal"/>
+                <textField id="nameField" property="name"/>
+                <textField id="addressCityField" property="address.city"/>
+                <textField id="addressStreetField" property="address.street"/>
+                <textField id="addressBuildingField" property="address.building"/>
+                <textField id="emailField" property="email"/>
+                <pickerField id="userField" property="user">
+                    <actions>
+                        <action id="lookup" type="picker_lookup"/>
+                        <action id="clear" type="picker_clear"/>
+                    </actions>
+                </pickerField>
+            </column>
+        </form>
+        <hbox id="editActions" spacing="true">
+            <button id="onShowDialogBtnClick" primary="true" icon="CHECK" caption="OK"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

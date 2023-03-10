@@ -7,7 +7,8 @@ import com.haulmont.cuba.core.entity.annotation.EmbeddedParameters;
 import javax.persistence.*;
 
 @Entity(name = "onlinestore_LegalPerson")
-@NamePattern("%s|fullNameLegal")
+@Table(name = "ONLINESTORE_LEGAL_PERSON")
+@NamePattern("%s|buyerType")
 public class LegalPerson extends Buyer {
     private static final long serialVersionUID = -4901702845873708688L;
 
@@ -25,7 +26,7 @@ public class LegalPerson extends Buyer {
     private String email;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn
+    @JoinColumn(name = "USER_ID")
     private ExtUser user;
 
     public LegalPerson() {

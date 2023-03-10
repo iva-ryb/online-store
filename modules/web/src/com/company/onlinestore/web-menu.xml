@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <menu-config xmlns="http://schemas.haulmont.com/cuba/menu.xsd">
     <menu id="application-onlinestore" insertBefore="administration" caption="mainMsg://menu_config.application-onlinestore">
+        <item screen="onlinestore_Buyer.browse" caption="mainMsg://menu_config.onlinestore_Buyer.browse"/>
+        <item screen="sec$ExtUser.browse" caption="mainMsg://menu_config.sec$ExtUser.browse"/>
+        <item screen="onlinestore_LegalPerson.browse" caption="mainMsg://menu_config.onlinestore_LegalPerson.browse"/>
+        <item screen="onlinestore_PrivatePerson.browse"
+              caption="mainMsg://menu_config.onlinestore_PrivatePerson.browse"/>
+        <item screen="onlinestore_OnlineOrder.browse" caption="mainMsg://menu_config.onlinestore_OnlineOrder.browse"/>
     </menu>
 </menu-config>
