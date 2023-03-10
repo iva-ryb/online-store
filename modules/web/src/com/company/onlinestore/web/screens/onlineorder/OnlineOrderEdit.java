@@ -5,12 +5,11 @@ import com.company.onlinestore.entity.ExtUser;
 import com.company.onlinestore.entity.OnlineOrder;
 import com.company.onlinestore.entity.ProductList;
 import com.company.onlinestore.entity.RandomProduct;
-import com.company.onlinestore.web.screens.storeproduct.StoreProductBrowse;
 import com.haulmont.cuba.core.app.UniqueNumbersService;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.Metadata;
-import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.components.Button;
+import com.haulmont.cuba.gui.components.LookupPickerField;
 import com.haulmont.cuba.gui.components.Table;
 import com.haulmont.cuba.gui.model.CollectionContainer;
 import com.haulmont.cuba.gui.screen.*;
@@ -31,21 +30,17 @@ public class OnlineOrderEdit extends StandardEditor<OnlineOrder> {
 
     @Inject
     private UniqueNumbersService uniqueNumbersService;
-
     @Inject
     private UserSession userSession;
-
     @Inject
     private DataManager dataManager;
-
-    @Inject
-    private ScreenBuilders screenBuilders;
-
     @Inject
     private Metadata metadata;
-
     @Inject
     private CollectionContainer<RandomProduct> customDatasourceDc;
+    @Inject
+    private LookupPickerField<StoreProduct> storeProductField;
+
 
     @Subscribe
     public void onBeforeCommitChanges(BeforeCommitChangesEvent event) {
@@ -74,11 +69,17 @@ public class OnlineOrderEdit extends StandardEditor<OnlineOrder> {
 
     @Subscribe("openProductListScreen")
     public void onOpenProductListScreenClick(Button.ClickEvent event) {
-        screenBuilders.lookup(StoreProduct.class, this)
-                .withScreenClass(StoreProductBrowse.class)
-                .withLaunchMode(OpenMode.DIALOG)
-                .build()
-                .show();
+        List<ProductList> products = getEditedEntity().getProducts();
+        StoreProduct storeProduct = storeProductField.getValue();
+        if (storeProduct != null) {
+            ProductList product = dataManager.create(ProductList.class);
+            product.setProduct(storeProduct.getProduct());
+            product.setAmount(1);
+            product.setPrice(storeProduct.getPrice());
+            product.setOnlineOrder(getEditedEntity());
+            products.add(product);
+        }
+        storeProductField.clear();
     }
 
     @Subscribe

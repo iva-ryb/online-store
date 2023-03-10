@@ -13,6 +13,7 @@
             <collection id="productListDc" property="products"/>
             <loader/>
         </instance>
+        <collection id="storeProductsDc" class="com.company.application.entity.Store" view="store-view"/>
         <collection id="customDatasourceDc" class="com.company.onlinestore.entity.RandomProduct"/>
     </data>
     <dialogMode height="600"
@@ -26,7 +27,7 @@
                         <textField id="statusField" property="status"/>
                     </column>
                 </form>
-                <table dataContainer="productListDc" width="100%" height="AUTO">
+                <table id="productsOrderTable" dataContainer="productListDc" width="100%" height="AUTO">
                     <columns>
                         <column id="product"/>
                         <column id="price"/>
@@ -38,6 +39,12 @@
                     <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
                     <button id="closeBtn" action="windowClose"/>
                     <button id="openProductListScreen" icon="PRODUCT_HUNT" caption="add product"/>
+                    <lookupPickerField id="storeProductField" metaClass="application_StoreProduct">
+                        <actions>
+                            <action id="lookup" type="picker_lookup"/>
+                            <action id="clear" type="picker_clear"/>
+                        </actions>
+                    </lookupPickerField>
                 </hbox>
             </tab>
             <tab id="randomProductsTab" margin="true,false,false,false" spacing="true" caption="random products">
