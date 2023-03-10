@@ -6,5 +6,7 @@
         <item screen="onlinestore_LegalPerson.browse" caption="mainMsg://menu_config.onlinestore_LegalPerson.browse"/>
         <item screen="onlinestore_PrivatePerson.browse"
               caption="mainMsg://menu_config.onlinestore_PrivatePerson.browse"/>
+        <item screen="onlinestore_OnlineOrder.browse" caption="mainMsg://menu_config.onlinestore_OnlineOrder.browse"/>
+        <item screen="application_StoreProduct.browse" caption="mainMsg://menu_config.application_StoreProduct.browse"/>
     </menu>
 </menu-config>

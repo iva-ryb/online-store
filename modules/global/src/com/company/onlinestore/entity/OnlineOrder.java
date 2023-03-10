@@ -1,34 +1,43 @@
 package com.company.onlinestore.entity;
 
-import com.company.application.entity.StoreProduct;
-import com.haulmont.cuba.core.app.UniqueNumbersService;
+import com.haulmont.chile.core.annotations.Composition;
+import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.StandardEntity;
+import com.haulmont.cuba.core.entity.annotation.OnDeleteInverse;
+import com.haulmont.cuba.core.global.DeletePolicy;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 
 @Table(name = "ONLINESTORE_ONLINE_ORDER")
 @Entity(name = "onlinestore_OnlineOrder")
+@NamePattern("%s|number")
 public class OnlineOrder extends StandardEntity {
+
     private static final long serialVersionUID = -8572973866680594205L;
 
     @Column(name = "NUMBER")
-    private String number; //todo добавить вычисление через UniqueNumbersAPI
+    private String number;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BUYER_ID")
     @NotNull
     private Buyer buyer;
 
-    @NotNull
-    @OneToMany
-    private List<StoreProduct> productList;
+    @Composition
+    @OnDeleteInverse(DeletePolicy.CASCADE)
+    @OneToMany(mappedBy = "onlineOrder")
+    private List<ProductList> products;
 
-    @Transient
+    @Column(name = "SUM")
     private BigDecimal sum;
 
+    @Min(1)
+    @Max(99)
     @Column(name = "DISCOUNT")
     private Integer discount;
 
@@ -59,14 +68,6 @@ public class OnlineOrder extends StandardEntity {
         this.buyer = buyer;
     }
 
-    public List<StoreProduct> getProductList() {
-        return productList;
-    }
-
-    public void setProductList(List<StoreProduct> productList) {
-        this.productList = productList;
-    }
-
     public BigDecimal getSum() {
         return sum;
     }
@@ -81,5 +82,13 @@ public class OnlineOrder extends StandardEntity {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public List<ProductList> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<ProductList> products) {
+        this.products = products;
     }
 }

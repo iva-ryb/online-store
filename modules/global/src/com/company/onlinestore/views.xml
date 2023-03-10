@@ -17,4 +17,7 @@
         <property name="user" view="_minimal"/>
         <property name="address" view="_minimal"/>
     </view>
+    <view entity="onlinestore_ProductList" name="productList-view" extends="_local">
+        <property name="product" view="product-view"/>
+    </view>
 </views>
