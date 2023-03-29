@@ -7,5 +7,13 @@
     <context:component-scan base-package="com.company.onlinestore"/>
     
     <gui:screens base-packages="com.company.onlinestore.web"/>
+    <bean id="onlinestore_proxyCreator" class="com.haulmont.cuba.web.sys.remoting.WebRemoteProxyBeanCreator">
+        <property name="serverSelector" ref="cuba_ServerSelector"/>
+        <property name="remoteServices">
+            <map>
+                <entry key="onlinestore_OrderStatusService" value="com.company.onlinestore.service.OrderStatusService"/>
+            </map>
+        </property>
+    </bean>
 
 </beans>

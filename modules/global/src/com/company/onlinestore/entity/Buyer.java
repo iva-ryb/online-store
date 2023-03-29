@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity(name = "onlinestore_Buyer")
 @Inheritance(strategy = InheritanceType.JOINED)
 @NamePattern("%s|buyerType")
-public abstract class Buyer extends StandardEntity {
+public class Buyer extends StandardEntity {
     private static final long serialVersionUID = 8878967410472223607L;
 
     @Column(name = "TYPE")

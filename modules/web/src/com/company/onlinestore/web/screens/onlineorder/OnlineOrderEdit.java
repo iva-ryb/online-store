@@ -1,10 +1,11 @@
 package com.company.onlinestore.web.screens.onlineorder;
 
 import com.company.application.entity.StoreProduct;
-import com.company.onlinestore.entity.ExtUser;
+import com.company.onlinestore.entity.Buyer;
 import com.company.onlinestore.entity.OnlineOrder;
 import com.company.onlinestore.entity.ProductList;
 import com.company.onlinestore.entity.RandomProduct;
+import com.haulmont.addon.bproc.service.BprocRuntimeService;
 import com.haulmont.cuba.core.app.UniqueNumbersService;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.Metadata;
@@ -17,10 +18,7 @@ import com.haulmont.cuba.security.global.UserSession;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @UiController("onlinestore_OnlineOrder.edit")
 @UiDescriptor("online-order-edit.xml")
@@ -28,6 +26,9 @@ import java.util.Set;
 @LoadDataBeforeShow
 public class OnlineOrderEdit extends StandardEditor<OnlineOrder> {
 
+
+    @Inject
+    private BprocRuntimeService bprocRuntimeService;
     @Inject
     private UniqueNumbersService uniqueNumbersService;
     @Inject
@@ -40,14 +41,17 @@ public class OnlineOrderEdit extends StandardEditor<OnlineOrder> {
     private CollectionContainer<RandomProduct> customDatasourceDc;
     @Inject
     private LookupPickerField<StoreProduct> storeProductField;
-
+    private boolean isNewOrder = true;
 
     @Subscribe
     public void onBeforeCommitChanges(BeforeCommitChangesEvent event) {
         OnlineOrder onlineOrder = getEditedEntity();
         if (!userSession.getUser().getLoginLowerCase().equals("admin")) {
-            ExtUser user = (ExtUser) dataManager.load(ExtUser.class).id(userSession.getUser().getId()).one();
-            onlineOrder.setBuyer(user.getBuyer());
+            UUID id = userSession.getUser().getId();
+            Buyer buyer = dataManager.load(Buyer.class).query("select e from onlinestore_Buyer e where e.user.id = :id")
+                    .parameter("id", id)
+                    .one();
+            onlineOrder.setBuyer(buyer);
         }
         if (onlineOrder.getNumber() == null) {
             onlineOrder.setNumber(String.valueOf(uniqueNumbersService.getNextNumber("sequence")));
@@ -70,6 +74,10 @@ public class OnlineOrderEdit extends StandardEditor<OnlineOrder> {
     @Subscribe("openProductListScreen")
     public void onOpenProductListScreenClick(Button.ClickEvent event) {
         List<ProductList> products = getEditedEntity().getProducts();
+        if (products == null) {
+            products = new ArrayList<>();
+            getEditedEntity().setProducts(products);
+        }
         StoreProduct storeProduct = storeProductField.getValue();
         if (storeProduct != null) {
             ProductList product = dataManager.create(ProductList.class);
@@ -119,5 +127,21 @@ public class OnlineOrderEdit extends StandardEditor<OnlineOrder> {
 
     private int getRandomIntegerBetweenRange(int min, int max) {
         return (int) (Math.random() * ((max - min) + 1)) + min;
+    }
+
+    @Subscribe
+    public void onAfterCommitChanges(AfterCommitChangesEvent event) {
+        OnlineOrder order = getEditedEntity();
+        if (isNewOrder) {
+            Map<String, Object> processVariables = new HashMap<>();
+            processVariables.put("onlineOrder", order);
+            processVariables.put("buyer ", userSession.getCurrentOrSubstitutedUser());
+            bprocRuntimeService.startProcessInstanceByKey(
+                    "process",
+                    order.getNumber(),
+                    processVariables);
+            isNewOrder = false;
+        }
+
     }
 }

@@ -8,12 +8,16 @@ import com.company.onlinestore.web.screens.legalperson.LegalPersonEdit;
 import com.company.onlinestore.web.screens.privateperson.PrivatePersonEdit;
 import com.haulmont.cuba.core.global.CommitContext;
 import com.haulmont.cuba.core.global.DataManager;
+import com.haulmont.cuba.core.global.PasswordEncryption;
 import com.haulmont.cuba.gui.Dialogs;
+import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.Screens;
 import com.haulmont.cuba.gui.components.Action;
 import com.haulmont.cuba.gui.components.Button;
 import com.haulmont.cuba.gui.components.DialogAction;
+import com.haulmont.cuba.gui.components.TextField;
 import com.haulmont.cuba.gui.components.actions.BaseAction;
+import com.haulmont.cuba.gui.model.DataContext;
 import com.haulmont.cuba.gui.screen.*;
 
 import javax.inject.Inject;
@@ -23,13 +27,21 @@ import javax.inject.Inject;
 @EditedEntityContainer("extUserDc")
 @LoadDataBeforeShow
 public class ExtUserEdit extends StandardEditor<ExtUser> {
-
+    @Inject
+    private TextField<String> passwordField;
+    @Inject
+    private TextField<String> loginField;
     @Inject
     protected DataManager dataManager;
     @Inject
     private Screens screens;
     @Inject
     private Dialogs dialogs;
+    @Inject
+    private Notifications notifications;
+
+    @Inject
+    private PasswordEncryption passwordEncryption;
 
     @Subscribe("onShowDialogBtnClick")
     public void onOnShowDialogBtnClickClick(Button.ClickEvent event) {
@@ -41,10 +53,12 @@ public class ExtUserEdit extends StandardEditor<ExtUser> {
                             new DialogAction(DialogAction.Type.YES, Action.Status.PRIMARY).withHandler(e -> {
                                 createBuyer(getEditedEntity());
                             }),
-                            new DialogAction(DialogAction.Type.NO))
+                            new DialogAction(DialogAction.Type.NO).withHandler(e -> {
+                                closeWithCommit();
+                            }))
                     .show();
         } else {
-            closeWithDiscard();
+            closeWithCommit();
         }
     }
 
@@ -87,4 +101,15 @@ public class ExtUserEdit extends StandardEditor<ExtUser> {
 
                 ).show();
     }
+
+    @Subscribe(target = Target.DATA_CONTEXT)
+    public void onPreCommit(DataContext.PreCommitEvent event) {
+        ExtUser user = getEditedEntity();
+        String password = passwordField.getRawValue();
+
+        String passwordHash = passwordEncryption.getPasswordHash(user.getId(), password);
+        user.setPassword(passwordHash);
+    }
+
+
 }
