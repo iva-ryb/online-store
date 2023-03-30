@@ -6,7 +6,9 @@
         <property name="group" view="group.browse"/>
     </view>
     <view entity="onlinestore_Buyer" name="buyer-view" extends="_local">
-        <property name="user" view="_minimal"/>
+        <property name="user" view="_minimal">
+            <property name="buyer" view="_minimal"/>
+        </property>
     </view>
     <view entity="onlinestore_LegalPerson" name="legalPerson-view" extends="_local">
         <property name="user" view="_minimal">
@@ -14,7 +16,7 @@
         </property>
     </view>
     <view entity="onlinestore_PrivatePerson" name="privatePerson-view" extends="_local">
-        <property name="user" view="_minimal"/>
+        <property name="user" view="extUser-view"/>
         <property name="address" view="_minimal"/>
     </view>
     <view entity="onlinestore_ProductList" name="productList-view" extends="_local">
