@@ -1,19 +1,18 @@
 package com.company.onlinestore.web.screens.onlineorder;
 
 import com.company.application.entity.StoreProduct;
-import com.company.onlinestore.entity.Buyer;
-import com.company.onlinestore.entity.OnlineOrder;
-import com.company.onlinestore.entity.ProductList;
-import com.company.onlinestore.entity.RandomProduct;
+import com.company.onlinestore.entity.*;
 import com.haulmont.addon.bproc.service.BprocRuntimeService;
 import com.haulmont.cuba.core.app.UniqueNumbersService;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.Metadata;
+import com.haulmont.cuba.core.global.MetadataTools;
 import com.haulmont.cuba.gui.components.Button;
 import com.haulmont.cuba.gui.components.LookupPickerField;
 import com.haulmont.cuba.gui.components.Table;
 import com.haulmont.cuba.gui.model.CollectionContainer;
 import com.haulmont.cuba.gui.screen.*;
+import com.haulmont.cuba.security.entity.User;
 import com.haulmont.cuba.security.global.UserSession;
 
 import javax.inject.Inject;
@@ -41,7 +40,9 @@ public class OnlineOrderEdit extends StandardEditor<OnlineOrder> {
     private CollectionContainer<RandomProduct> customDatasourceDc;
     @Inject
     private LookupPickerField<StoreProduct> storeProductField;
-    private boolean isNewOrder = true;
+    private boolean isNewOrder;
+    @Inject
+    private MetadataTools metadataTools;
 
     @Subscribe
     public void onBeforeCommitChanges(BeforeCommitChangesEvent event) {
@@ -132,16 +133,18 @@ public class OnlineOrderEdit extends StandardEditor<OnlineOrder> {
     @Subscribe
     public void onAfterCommitChanges(AfterCommitChangesEvent event) {
         OnlineOrder order = getEditedEntity();
+        if (order.getStatus() == null) {
+            isNewOrder = true;
+        }
         if (isNewOrder) {
+            User user = userSession.getCurrentOrSubstitutedUser();
             Map<String, Object> processVariables = new HashMap<>();
             processVariables.put("onlineOrder", order);
-            processVariables.put("buyer ", userSession.getCurrentOrSubstitutedUser());
+            processVariables.put("user ", user);
             bprocRuntimeService.startProcessInstanceByKey(
                     "process",
-                    order.getNumber(),
+                    metadataTools.getInstanceName(order),
                     processVariables);
-            isNewOrder = false;
         }
-
     }
 }
