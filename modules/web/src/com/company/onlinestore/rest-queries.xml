@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<queries xmlns="http://schemas.haulmont.com/cuba/rest-queries.xsd">
+    <query name="availableProducts" entity="application_StoreProduct" view="storeProduct-view">
+        <jpql><![CDATA[select p from application_StoreProduct o where o.count > 0]]></jpql>
+    </query>
+</queries>
