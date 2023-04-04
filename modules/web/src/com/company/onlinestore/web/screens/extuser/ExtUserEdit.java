@@ -6,11 +6,9 @@ import com.company.onlinestore.entity.LegalPerson;
 import com.company.onlinestore.entity.PrivatePerson;
 import com.company.onlinestore.web.screens.legalperson.LegalPersonEdit;
 import com.company.onlinestore.web.screens.privateperson.PrivatePersonEdit;
-import com.haulmont.cuba.core.global.CommitContext;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.PasswordEncryption;
 import com.haulmont.cuba.gui.Dialogs;
-import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.Screens;
 import com.haulmont.cuba.gui.components.Action;
 import com.haulmont.cuba.gui.components.Button;
@@ -30,15 +28,11 @@ public class ExtUserEdit extends StandardEditor<ExtUser> {
     @Inject
     private TextField<String> passwordField;
     @Inject
-    private TextField<String> loginField;
-    @Inject
     protected DataManager dataManager;
     @Inject
     private Screens screens;
     @Inject
     private Dialogs dialogs;
-    @Inject
-    private Notifications notifications;
 
     @Inject
     private PasswordEncryption passwordEncryption;
@@ -51,7 +45,11 @@ public class ExtUserEdit extends StandardEditor<ExtUser> {
                     .withMessage("You not joined with Buyer, create?")
                     .withActions(
                             new DialogAction(DialogAction.Type.YES, Action.Status.PRIMARY).withHandler(e -> {
-                                createBuyer(getEditedEntity());
+                                ExtUser user = getEditedEntity();
+                                String password = passwordField.getRawValue();
+                                String passwordHash = passwordEncryption.getPasswordHash(user.getId(), password);
+                                user.setPassword(passwordHash);
+                                createBuyer(user);
                             }),
                             new DialogAction(DialogAction.Type.NO).withHandler(e -> {
                                 closeWithCommit();

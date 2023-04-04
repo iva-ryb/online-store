@@ -1,0 +1,19 @@
+version: '2'
+
+services:
+  postgres:
+    image: postgres:12
+    environment:
+      - POSTGRES_DB=onlinestore
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=12345
+    ports:
+      - "5433:5432"
+  web:
+    depends_on:
+      - postgres
+    image: store
+    volumes:
+      - /repository/study/CUBA/online-store/docker-image/:/opt/store-home
+    ports:
+      - "8080:8080"
